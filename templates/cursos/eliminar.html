@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block container %}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h2>Eliminar Curso</h2>
+            </div>
+            <div class="card-body">
+                <p class="text-center">¿Estás seguro de que deseas eliminar el curso <strong>"{{ form.nombre.data }}"</strong>? Esta acción no se puede deshacer y afectará a los alumnos inscritos.</p>
+                <form method="POST" novalidate>
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="id" value="{{ form.id.data }}">
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-danger">Sí, Eliminar Curso</button>
+                        <a href="{{ url_for('cursos.lista_cursos') }}" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

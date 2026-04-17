@@ -1,0 +1,89 @@
+{% extends "layout.html" %}
+{% block container %}
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>{{ curso.nombre }}</h3>
+                <span class="badge bg-primary">ID: #{{ curso.id }}</span>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <h5>Maestro</h5>
+                    <p>{{ curso.maestro.nombre }} {{ curso.maestro.apellidos }}</p>
+                </div>
+                <div class="mb-3">
+                    <h5>Descripción</h5>
+                    <p>{{ curso.descripcion }}</p>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="{{ url_for('cursos.modificar_curso', id=curso.id) }}" class="btn btn-primary w-100 mb-2">Editar Curso</a>
+                <a href="{{ url_for('cursos.lista_cursos') }}" class="btn btn-secondary w-100">Volver al catálogo</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4>Inscribir Alumno</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" class="row g-3">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    {{ enroll_form.curso_id }}
+                    <div class="col-md-8">
+                        {{ enroll_form.alumno_id.label(class="form-label") }}
+                        {{ enroll_form.alumno_id(class="form-control") }}
+                    </div>
+                    <div class="col-md-4 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary w-100">Inscribir</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4>Alumnos Inscritos</h4>
+                <span class="badge bg-info">{{ curso.alumnos|length }} Alumnos</span>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th class="text-center">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for alum in curso.alumnos %}
+                        <tr>
+                            <td>{{ alum.nombre }} {{ alum.apaterno }}</td>
+                            <td>{{ alum.email }}</td>
+                            <td class="text-center">
+                                <form action="{{ url_for('cursos.desvincular_alumno') }}" method="POST" class="d-inline">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                    <input type="hidden" name="alumno_id" value="{{ alum.id }}">
+                                    <input type="hidden" name="curso_id" value="{{ curso.id }}">
+                                    <button type="submit" class="btn btn-danger btn-sm" title="Desvincular">Desvincular</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {% if not curso.alumnos %}
+                        <tr>
+                            <td colspan="3" class="text-center text-muted">
+                                No hay alumnos inscritos en este curso todavía.
+                            </td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

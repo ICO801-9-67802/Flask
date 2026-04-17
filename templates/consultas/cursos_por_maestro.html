@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+{% block container %}
+
+<div class="row">
+    <div class="col-12">
+        <h2>Cursos por Maestro</h2>
+        <form method="GET" class="mb-3">
+            <div class="row">
+                <div class="col-md-4">
+                    <select name="maestro_matricula" class="form-select" onchange="this.form.submit()">
+                        <option value="">Seleccionar Maestro</option>
+                        {% for maestro in maestros %}
+                        <option value="{{ maestro.matricula }}" {% if maestro_seleccionado and maestro_seleccionado.matricula == maestro.matricula %}selected{% endif %}>{{ maestro.nombre }} {{ maestro.apellidos }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </form>
+        {% if maestro_seleccionado %}
+        <h3>Cursos impartidos por {{ maestro_seleccionado.nombre }} {{ maestro_seleccionado.apellidos }}</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for curso in cursos %}
+                <tr>
+                    <td>{{ curso.id }}</td>
+                    <td>{{ curso.nombre }}</td>
+                    <td>{{ curso.descripcion }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% if not cursos %}
+        <p>Este maestro no imparte ningún curso.</p>
+        {% endif %}
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

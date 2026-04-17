@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+{% block container %}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <h2 class="text-center mb-4">Nuevo Maestro</h2>
+        <form action="{{ url_for('maestros.maestros_nuevo') }}" method="POST" novalidate>
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="mb-3">
+                <label for="matricula" class="form-label">Matrícula</label>
+                {{ form.matricula(class="form-control") }}
+                {% if form.matricula.errors %}
+                    {% for error in form.matricula.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                {{ form.nombre(class="form-control") }}
+                {% if form.nombre.errors %}
+                    {% for error in form.nombre.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                <label for="apellidos" class="form-label">Apellidos</label>
+                {{ form.apellidos(class="form-control") }}
+                {% if form.apellidos.errors %}
+                    {% for error in form.apellidos.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                <label for="especialidad" class="form-label">Especialidad</label>
+                {{ form.especialidad(class="form-control") }}
+                {% if form.especialidad.errors %}
+                    {% for error in form.especialidad.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Correo Electrónico</label>
+                {{ form.email(class="form-control") }}
+                {% if form.email.errors %}
+                    {% for error in form.email.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" class="btn btn-primary">Registrar Maestro</button>
+                <a href="{{ url_for('maestros.maestros') }}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

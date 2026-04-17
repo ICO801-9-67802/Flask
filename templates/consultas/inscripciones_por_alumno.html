@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+{% block container %}
+
+<div class="row">
+    <div class="col-12">
+        <h2>Inscripciones por Alumno</h2>
+        <form method="GET" class="mb-4">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-5">
+                    <label for="alumno_id" class="form-label">Seleccionar Alumno</label>
+                    <select id="alumno_id" name="alumno_id" class="form-select" onchange="this.form.submit()">
+                        <option value="">Seleccionar Alumno</option>
+                        {% for alumno in alumnos %}
+                        <option value="{{ alumno.id }}" {% if alumno_seleccionado and alumno_seleccionado.id == alumno.id %}selected{% endif %}>
+                            {{ alumno.nombre }} {{ alumno.apaterno }} {{ alumno.amaterno }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </form>
+
+        {% if alumno_seleccionado %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4>Alumno: {{ alumno_seleccionado.nombre }} {{ alumno_seleccionado.apaterno }} {{ alumno_seleccionado.amaterno }}</h4>
+                <p class="mb-0"><strong>Email:</strong> {{ alumno_seleccionado.email }}</p>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="card">
+            <div class="card-header">
+                <h4>Cursos inscritos</h4>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID Curso</th>
+                            <th>Nombre del Curso</th>
+                            <th>Maestro</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for curso in cursos %}
+                        <tr>
+                            <td>{{ curso.id }}</td>
+                            <td>{{ curso.nombre }}</td>
+                            <td>{{ curso.maestro.nombre }} {{ curso.maestro.apellidos }}</td>
+                        </tr>
+                        {% endfor %}
+                        {% if not cursos %}
+                        <tr>
+                            <td colspan="3" class="text-center text-muted">No hay cursos inscritos para este alumno.</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

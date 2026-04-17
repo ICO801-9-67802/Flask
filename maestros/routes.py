@@ -1,0 +1,114 @@
+from flask import render_template, request, redirect, url_for, flash
+from models import db, Maestros
+import forms
+from . import maestros_bp
+
+@maestros_bp.route("/maestros", methods=["GET", "POST"])
+def maestros():
+    create_form = forms.MaestrosForm(request.form)
+    maestros = Maestros.query.all()
+    return render_template("maestros/index.html", form=create_form, maestros=maestros)
+
+@maestros_bp.route("/maestros/nuevo", methods=["GET", "POST"])
+def maestros_nuevo():
+    create_form = forms.MaestrosForm(request.form)
+
+    if request.method == 'POST' and create_form.validate():
+        try:
+            matricula_int = int(create_form.matricula.data)
+        except (ValueError, TypeError):
+            flash("La matrícula debe ser numérica")
+            return render_template("maestros/crear.html", form=create_form)
+
+        existe_maestro = db.session.get(Maestros, matricula_int)
+        if existe_maestro:
+            flash("No se puede registrar porque la matrícula ya existe")
+            return render_template("maestros/crear.html", form=create_form)
+
+        maestro = Maestros(
+            matricula=matricula_int,
+            nombre=create_form.nombre.data,
+            apellidos=create_form.apellidos.data,
+            especialidad=create_form.especialidad.data,
+            email=create_form.email.data
+        )
+        db.session.add(maestro)
+        db.session.commit()
+        flash("Maestro registrado correctamente")
+        return redirect(url_for('maestros.maestros'))
+
+    return render_template("maestros/crear.html", form=create_form)
+
+@maestros_bp.route("/maestros/modificar", methods=['GET', 'POST'])
+def maestros_modificar():
+    create_form = forms.MaestrosForm(request.form)
+    matricula_str = request.args.get('matricula') or request.form.get('matricula')
+    matricula = int(matricula_str) if matricula_str else None
+    maestro1 = db.session.get(Maestros, matricula) if matricula else None
+
+    if request.method == 'GET':
+        if not maestro1:
+            flash("Maestro no encontrado")
+            return redirect(url_for('maestros.maestros'))
+        create_form.matricula.data = maestro1.matricula
+        create_form.nombre.data = maestro1.nombre
+        create_form.apellidos.data = maestro1.apellidos
+        create_form.especialidad.data = maestro1.especialidad
+        create_form.email.data = maestro1.email
+
+    if request.method == 'POST' and create_form.validate():
+        if maestro1:
+            maestro1.nombre = create_form.nombre.data
+            maestro1.apellidos = create_form.apellidos.data
+            maestro1.especialidad = create_form.especialidad.data
+            maestro1.email = create_form.email.data
+            db.session.commit()
+            flash("Maestro modificado correctamente")
+        return redirect(url_for('maestros.maestros'))
+
+    return render_template("maestros/modificar.html", form=create_form)
+
+@maestros_bp.route('/maestros/eliminar', methods=['GET', 'POST'])
+def maestros_eliminar():
+    create_form = forms.MaestrosForm(request.form)
+    matricula_str = request.args.get('matricula') or request.form.get('matricula')
+    matricula = int(matricula_str) if matricula_str else None
+    maestro1 = db.session.get(Maestros, matricula) if matricula else None
+
+    if request.method == 'GET':
+        if not maestro1:
+            flash("Maestro no encontrado")
+            return redirect(url_for('maestros.maestros'))
+        create_form.matricula.data = maestro1.matricula
+        create_form.nombre.data = maestro1.nombre
+        create_form.apellidos.data = maestro1.apellidos
+        create_form.especialidad.data = maestro1.especialidad
+        create_form.email.data = maestro1.email
+
+    if request.method == 'POST':
+        if maestro1:
+            db.session.delete(maestro1)
+            db.session.commit()
+            flash("Maestro eliminado correctamente")
+        return redirect(url_for('maestros.maestros'))
+
+    return render_template('maestros/eliminar.html', form=create_form)
+
+@maestros_bp.route("/maestros/detalles", methods=['GET'])
+def maestros_detalles():
+    matricula_str = request.args.get('matricula')
+    matricula = int(matricula_str) if matricula_str else None
+    maestro1 = db.session.get(Maestros, matricula) if matricula else None
+    
+    if not maestro1:
+        flash("Maestro no encontrado")
+        return redirect(url_for('maestros.maestros'))
+
+    return render_template(
+        'maestros/detalles.html',
+        matricula=maestro1.matricula,
+        nombre=maestro1.nombre,
+        apellidos=maestro1.apellidos,
+        especialidad=maestro1.especialidad,
+        email=maestro1.email
+    )

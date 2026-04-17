@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+{% block container %}
+
+<div class="row">
+    <div class="col-12">
+        <h2>Directorio de Maestros</h2>
+        <p>Gestiona todos los docentes registrados en la institución.</p>
+        <a href="{{ url_for('maestros.maestros_nuevo') }}" class="btn btn-primary mb-3">Nuevo Maestro</a>
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Matrícula</th>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>Especialidad</th>
+                    <th>Correo</th>
+                    <th colspan="3" class="text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for maestro in maestros %}
+                <tr>
+                    <td>{{ maestro.matricula }}</td>
+                    <td>{{ maestro.nombre }}</td>
+                    <td>{{ maestro.apellidos }}</td>
+                    <td><span class="badge bg-secondary">{{ maestro.especialidad }}</span></td>
+                    <td>{{ maestro.email }}</td>
+                    <td class="text-center">
+                        <a href="{{ url_for('maestros.maestros_modificar', matricula=maestro.matricula) }}" class="btn btn-warning btn-sm" title="Editar">Editar</a>
+                    </td>
+                    <td class="text-center">
+                        <a href="{{ url_for('maestros.maestros_detalles', matricula=maestro.matricula) }}" class="btn btn-info btn-sm" title="Detalles">Detalles</a>
+                    </td>
+                    <td class="text-center">
+                        <a href="{{ url_for('maestros.maestros_eliminar', matricula=maestro.matricula) }}" class="btn btn-danger btn-sm" title="Eliminar">Eliminar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% if not maestros or maestros|length == 0 %}
+        <div class="alert alert-warning text-center">
+            <h4>No hay maestros registrados</h4>
+            <p>Comienza agregando un nuevo docente al directorio.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

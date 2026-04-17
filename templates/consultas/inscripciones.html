@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+{% block container %}
+
+<div class="row">
+    <div class="col-12">
+        <h2>Inscripciones</h2>
+        <form method="GET" class="mb-4">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-4">
+                    <label for="curso_id" class="form-label">Filtrar por curso</label>
+                    <select id="curso_id" name="curso_id" class="form-select" onchange="this.form.submit()">
+                        <option value="">Todos los cursos</option>
+                        {% for curso in cursos %}
+                        <option value="{{ curso.id }}" {% if curso_seleccionado and curso_seleccionado.id == curso.id %}selected{% endif %}>{{ curso.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </form>
+
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4>Listado de inscripciones</h4>
+                {% if curso_seleccionado %}
+                <span class="badge bg-info">Curso: {{ curso_seleccionado.nombre }}</span>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Curso</th>
+                            <th>Alumno</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for inscripcion in inscripciones %}
+                        <tr>
+                            <td>{{ inscripcion.fecha_inscripcion.strftime('%Y-%m-%d %H:%M:%S') if inscripcion.fecha_inscripcion else '-' }}</td>
+                            <td>{{ inscripcion.curso.nombre }}</td>
+                            <td>{{ inscripcion.alumno.nombre }} {{ inscripcion.alumno.apaterno }} {{ inscripcion.alumno.amaterno }}</td>
+                            <td>{{ inscripcion.alumno.email }}</td>
+                        </tr>
+                        {% endfor %}
+                        {% if not inscripciones %}
+                        <tr>
+                            <td colspan="4" class="text-center text-muted">No hay inscripciones registradas.</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

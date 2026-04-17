@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block container %}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h2>Eliminar Alumno</h2>
+            </div>
+            <div class="card-body">
+                <p class="text-center">¿Estás seguro de que deseas eliminar este registro? Esta acción no se puede deshacer.</p>
+                <form action="{{ url_for('alumnos.eliminar') }}" method="POST" novalidate>
+                    {{ form.hidden_tag() }}
+                    {{ form.id }}
+                    <div class="mb-3">
+                        {{ form.nombre.label(class="form-label") }}
+                        {{ form.nombre(class="form-control", readonly=True) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.apaterno.label(class="form-label") }}
+                        {{ form.apaterno(class="form-control", readonly=True) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.amaterno.label(class="form-label") }}
+                        {{ form.amaterno(class="form-control", readonly=True) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.email.label(class="form-label") }}
+                        {{ form.email(class="form-control", readonly=True) }}
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-danger">Sí, Eliminar Alumno</button>
+                        <a href="{{ url_for('alumnos.lista_alumnos') }}" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

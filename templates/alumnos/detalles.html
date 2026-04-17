@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block container %}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h2>Detalles del Alumno</h2>
+                <span class="badge bg-primary">ID: {{ id }}</span>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Nombre Completo</h5>
+                        <p>{{ nombre }} {{ apaterno }} {{ amaterno }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Edad</h5>
+                        <p>{{ edad }} años</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <h5>Correo Electrónico</h5>
+                        <p>{{ email }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer text-center">
+                <a href="{{ url_for('alumnos.modificar', id=id) }}" class="btn btn-primary">Editar Registro</a>
+                <a href="{{ url_for('alumnos.lista_alumnos') }}" class="btn btn-secondary">Volver a la Lista</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

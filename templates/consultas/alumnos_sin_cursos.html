@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block container %}
+
+<div class="row">
+    <div class="col-12">
+        <h2>Alumnos sin Cursos</h2>
+        <p>Alumnos que no están inscritos en ningún curso.</p>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido Paterno</th>
+                    <th>Apellido Materno</th>
+                    <th>Email</th>
+                    <th>Edad</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for alumno in alumnos %}
+                <tr>
+                    <td>{{ alumno.id }}</td>
+                    <td>{{ alumno.nombre }}</td>
+                    <td>{{ alumno.apaterno }}</td>
+                    <td>{{ alumno.amaterno }}</td>
+                    <td>{{ alumno.email }}</td>
+                    <td>{{ alumno.edad }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% if not alumnos %}
+        <p>Todos los alumnos están inscritos en al menos un curso.</p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

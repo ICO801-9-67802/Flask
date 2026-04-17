@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+{% block container %}
+
+<div class="row">
+    <div class="col-12">
+        <h2>Consultas</h2>
+        <p>Realiza consultas sobre los datos del sistema.</p>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Alumnos por Curso</h5>
+                        <p class="card-text">Ver alumnos inscritos en un curso específico.</p>
+                        <a href="{{ url_for('consultas.alumnos_por_curso') }}" class="btn btn-primary">Ver</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Cursos por Maestro</h5>
+                        <p class="card-text">Ver cursos impartidos por un maestro.</p>
+                        <a href="{{ url_for('consultas.cursos_por_maestro') }}" class="btn btn-primary">Ver</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Alumnos sin Cursos</h5>
+                        <p class="card-text">Ver alumnos no inscritos en ningún curso.</p>
+                        <a href="{{ url_for('consultas.alumnos_sin_cursos') }}" class="btn btn-primary">Ver</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Inscripciones</h5>
+                        <p class="card-text">Ver el listado de alumnos inscritos en cursos.</p>
+                        <a href="{{ url_for('consultas.inscripciones') }}" class="btn btn-primary">Ver</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Inscripciones por Alumno</h5>
+                        <p class="card-text">Ver cursos donde un alumno está inscrito.</p>
+                        <a href="{{ url_for('consultas.inscripciones_por_alumno') }}" class="btn btn-primary">Ver</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Estadísticas</h5>
+                        <p class="card-text">Ver estadísticas generales del sistema.</p>
+                        <a href="{{ url_for('consultas.estadisticas') }}" class="btn btn-primary">Ver</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
