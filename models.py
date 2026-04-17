@@ -14,11 +14,11 @@ class Alumnos(db.Model):
     email = db.Column(db.String(50), nullable=False)
     created_date = db.Column(db.DateTime, default=datetime.datetime.now)
 
-    cursos = db.relationship(
-        'Curso',
-        secondary='inscripciones',
-        back_populates='alumnos'
-    )
+    inscripciones = db.relationship('Inscripcion', back_populates='alumno', cascade='all, delete-orphan')
+
+    @property
+    def cursos(self):
+        return [i.curso for i in self.inscripciones]
 
 
 class Maestros(db.Model):
@@ -30,7 +30,7 @@ class Maestros(db.Model):
     especialidad = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(50), nullable=False)
 
-    cursos = db.relationship('Curso', back_populates='maestro')
+    cursos = db.relationship('Curso', back_populates='maestro', cascade='all, delete-orphan')
 
 
 class Curso(db.Model):
@@ -47,12 +47,11 @@ class Curso(db.Model):
     )
 
     maestro = db.relationship('Maestros', back_populates='cursos')
+    inscripciones = db.relationship('Inscripcion', back_populates='curso', cascade='all, delete-orphan')
 
-    alumnos = db.relationship(
-        'Alumnos',
-        secondary='inscripciones',
-        back_populates='cursos'
-    )
+    @property
+    def alumnos(self):
+        return [i.alumno for i in self.inscripciones]
 
 
 class Inscripcion(db.Model):
@@ -72,8 +71,8 @@ class Inscripcion(db.Model):
         nullable=False
     )
 
-    alumno = db.relationship('Alumnos', backref='inscripciones')
-    curso = db.relationship('Curso', backref='inscripciones')
+    alumno = db.relationship('Alumnos', back_populates='inscripciones')
+    curso = db.relationship('Curso', back_populates='inscripciones')
 
     fecha_inscripcion = db.Column(
         db.DateTime,

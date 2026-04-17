@@ -76,7 +76,7 @@ def eliminar_curso():
         if curso:
             db.session.delete(curso)
             db.session.commit()
-            flash("Curso eliminado correctamente")
+            flash("Curso y sus inscripciones eliminados correctamente")
         return redirect(url_for('cursos.lista_cursos'))
         
     return render_template('cursos/eliminar.html', form=create_form)

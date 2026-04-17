@@ -78,7 +78,7 @@ def eliminar():
         if alum1:
             db.session.delete(alum1)
             db.session.commit()
-            flash("Alumno eliminado correctamente")
+            flash("Alumno y sus inscripciones eliminados correctamente")
         return redirect(url_for('alumnos.lista_alumnos'))
         
     return render_template('alumnos/eliminar.html', form=create_form)

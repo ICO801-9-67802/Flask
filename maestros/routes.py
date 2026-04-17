@@ -89,7 +89,7 @@ def maestros_eliminar():
         if maestro1:
             db.session.delete(maestro1)
             db.session.commit()
-            flash("Maestro eliminado correctamente")
+            flash("Maestro y sus cursos eliminados correctamente")
         return redirect(url_for('maestros.maestros'))
 
     return render_template('maestros/eliminar.html', form=create_form)
